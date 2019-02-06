@@ -21,11 +21,15 @@ var m = [60, 0, 10, 0],
     excluded_groups = [];
 
 var colors = {
-  "Asia": [185,56,73],
-  "Europe": [37,50,75],
-  "North America": [325,50,39],
-  "South America": [10,28,67]
-  /*"Baby Foods": [185,56,73],
+  "Africa": [0,85,55],
+  "Asia": [82,39,39],
+  "Central America": [202,34,32],
+  "Europe": [180,100,50],
+  "North America": [300,100,50],
+  "Oceania": [60,100,50],
+  "South America": [0,0,50]
+  /*"Ethnic Foods": [41,75,61],
+  "Baby Foods": [185,56,73],
   "Baked Products": [37,50,75],
   "Beef Products": [325,50,39],
   "Beverages": [10,28,67],
