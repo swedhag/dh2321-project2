@@ -80,7 +80,9 @@ canvas, svg {
   font-size: 12px;
   cursor: move;
   padding-bottom: 24px;
+  padding-left: 10px;
 }
+
 .dark .axis text {
   fill: #f2f2f2;
   text-shadow: 0 1px 0 #000, 1px 0 0 #000, 0 -1px 0 #000, -1px 0 0 #000;

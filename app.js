@@ -23,11 +23,12 @@ var m = [60, 0, 10, 0],
 var colors = {
   "Africa": [0,85,55],
   "Asia": [82,39,39],
-  "Central America": [202,34,32],
+  "Central America": [243,100,50],
   "Europe": [180,100,50],
   "North America": [300,100,50],
   "Oceania": [60,100,50],
-  "South America": [0,0,50]
+  "South America": [0,0,50],
+  "World Average":[0,0,0]
   /*"Ethnic Foods": [41,75,61],
   "Baby Foods": [185,56,73],
   "Baked Products": [37,50,75],
@@ -164,6 +165,12 @@ d3.csv("newdata.csv", function(raw_data) {
           delete this.__origin__;
           delete dragging[d];
         }))
+  /*var dimensions = [
+    {
+      name: "name",
+      scale: d3.scale.ordinal().rangePoints([0, height]),
+      type: "string"
+    }]*/
 
   // Add an axis and title.
   g.append("svg:g")
@@ -174,6 +181,7 @@ d3.csv("newdata.csv", function(raw_data) {
       .attr("text-anchor", "middle")
       .attr("y", function(d,i) { return i%2 == 0 ? -14 : -30 } )
       .attr("x", 0)
+      .attr("width", 1)
       .attr("class", "label")
       .text(String)
       .append("title")
