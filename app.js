@@ -29,32 +29,6 @@ var colors = {
   "Oceania": [60,100,50],
   "South America": [0,0,50],
   "World Average":[0,0,0]
-  /*"Ethnic Foods": [41,75,61],
-  "Baby Foods": [185,56,73],
-  "Baked Products": [37,50,75],
-  "Beef Products": [325,50,39],
-  "Beverages": [10,28,67],
-  "Breakfast Cereals": [271,39,57],
-  "Cereal Grains and Pasta": [56,58,73],
-  "Dairy and Egg Products": [28,100,52],
-  "Ethnic Foods": [41,75,61],
-  "Fast Foods": [60,86,61],
-  "Fats and Oils": [30,100,73],
-  "Finfish and Shellfish Products": [318,65,67],
-  "Fruits and Fruit Juices": [274,30,76],
-  "Lamb, Veal, and Game Products": [20,49,49],
-  "Legumes and Legume Products": [334,80,84],
-  "Meals, Entrees, and Sidedishes": [185,80,45],
-  "Nut and Seed Products": [10,30,42],
-  "Pork Products": [339,60,49],
-  "Poultry Products": [359,69,49],
-  "Restaurant Foods": [204,70,41],
-  "Sausages and Luncheon Meats": [1,100,79],
-  "Snacks": [189,57,75],
-  "Soups, Sauces, and Gravies": [110,57,70],
-  "Spices and Herbs": [214,55,79],
-  "Sweets": [339,60,75],
-  "Vegetables and Vegetable Products": [120,56,40]*/
 };
 
 // Scale chart and canvas height
@@ -71,8 +45,8 @@ d3.selectAll("canvas")
 foreground = document.getElementById('foreground').getContext('2d');
 foreground.globalCompositeOperation = "destination-over";
 foreground.strokeStyle = "rgba(0,100,160,0.1)";
-foreground.lineWidth = 1.7;
-foreground.fillText("Loading...",w/2,h/2);
+foreground.lineWidth = 0.8;
+foreground.fillText("Set wave to start comparison.",w/2,h/2);
 
 // Highlight canvas for temporary interactions
 highlighted = document.getElementById('highlight').getContext('2d');
@@ -91,124 +65,146 @@ var svg = d3.select("svg")
   .append("svg:g")
     .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-// Load the data and visualization
-d3.csv("newdata.csv", function(raw_data) {
-  // Convert quantitative scales to floats
-  data = raw_data.map(function(d) {
-    for (var k in d) {
-      if (!_.isNaN(raw_data[0][k] - 0) && k != 'id') {
-        d[k] = parseFloat(d[k]) || 0;
-      }
-    };
-    return d;
-  });
+function filterWave(val) {
+  //d3.select("svg").remove();
+  //d3.select("#foreground").remove();
+  var canvas = document.getElementById("foreground");
+  var context = canvas.getContext("2d");
+  context.clearRect(0,0,canvas.width,canvas.height);
+  d3.selectAll("g").remove();
+  document.getElementById("legend").innerHTML = "";
+  document.getElementById("food-list").innerHTML = "";
+  //d3.select("#foreground").remove();
+  console.log("hejsanhoppsan");
+  loadWave(val);
+  console.log(val);
+}
 
-  // Extract the list of numerical dimensions and create a scale for each.
-  xscale.domain(dimensions = d3.keys(data[0]).filter(function(k) {
-    return (_.isNumber(data[0][k])) && (yscale[k] = d3.scale.linear()
-      .domain(d3.extent(data, function(d) { return +d[k]; }))
-      .range([h, 0]));
-  }).sort());
+function loadWave(val) {
+  var svg = d3.select("svg")
+      .attr("width", w + m[1] + m[3])
+      .attr("height", h + m[0] + m[2])
+    .append("svg:g")
+      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+  // Load the data and visualization
+  d3.csv(val, function(raw_data) {
+    // Convert quantitative scales to floats
+    data = raw_data.map(function(d) {
+      for (var k in d) {
+        if (!_.isNaN(raw_data[0][k] - 0) && k != 'id') {
+          d[k] = parseFloat(d[k]) || 0;
+        }
+      };
+      return d;
+    });
 
-  // Add a group element for each dimension.
-  var g = svg.selectAll(".dimension")
-      .data(dimensions)
-    .enter().append("svg:g")
-      .attr("class", "dimension")
-      .attr("transform", function(d) { return "translate(" + xscale(d) + ")"; })
-      .call(d3.behavior.drag()
-        .on("dragstart", function(d) {
-          dragging[d] = this.__origin__ = xscale(d);
-          this.__dragged__ = false;
-          d3.select("#foreground").style("opacity", "0.35");
-        })
-        .on("drag", function(d) {
-          dragging[d] = Math.min(w, Math.max(0, this.__origin__ += d3.event.dx));
-          dimensions.sort(function(a, b) { return position(a) - position(b); });
-          xscale.domain(dimensions);
-          g.attr("transform", function(d) { return "translate(" + position(d) + ")"; });
-          brush_count++;
-          this.__dragged__ = true;
+    // Extract the list of numerical dimensions and create a scale for each.
+    xscale.domain(dimensions = d3.keys(data[0]).filter(function(k) {
+      return (_.isNumber(data[0][k])) && (yscale[k] = d3.scale.linear()
+        .domain(d3.extent(data, function(d) { return +d[k]; }))
+        .range([h, 0]));
+    }).sort());
 
-          // Feedback for axis deletion if dropped
-          if (dragging[d] < 12 || dragging[d] > w-12) {
-            d3.select(this).select(".background").style("fill", "#b00");
-          } else {
-            d3.select(this).select(".background").style("fill", null);
-          }
-        })
-        .on("dragend", function(d) {
-          if (!this.__dragged__) {
-            // no movement, invert axis
-            var extent = invert_axis(d);
+    // Add a group element for each dimension.
+    var g = svg.selectAll(".dimension")
+        .data(dimensions)
+      .enter().append("svg:g")
+        .attr("class", "dimension")
+        .attr("transform", function(d) { return "translate(" + xscale(d) + ")"; })
+        .call(d3.behavior.drag()
+          .on("dragstart", function(d) {
+            dragging[d] = this.__origin__ = xscale(d);
+            this.__dragged__ = false;
+            d3.select("#foreground").style("opacity", "0.35");
+          })
+          .on("drag", function(d) {
+            dragging[d] = Math.min(w, Math.max(0, this.__origin__ += d3.event.dx));
+            dimensions.sort(function(a, b) { return position(a) - position(b); });
+            xscale.domain(dimensions);
+            g.attr("transform", function(d) { return "translate(" + position(d) + ")"; });
+            brush_count++;
+            this.__dragged__ = true;
 
-          } else {
-            // reorder axes
-            d3.select(this).transition().attr("transform", "translate(" + xscale(d) + ")");
+            // Feedback for axis deletion if dropped
+            if (dragging[d] < 12 || dragging[d] > w-12) {
+              d3.select(this).select(".background").style("fill", "#b00");
+            } else {
+              d3.select(this).select(".background").style("fill", null);
+            }
+          })
+          .on("dragend", function(d) {
+            if (!this.__dragged__) {
+              // no movement, invert axis
+              var extent = invert_axis(d);
 
-            var extent = yscale[d].brush.extent();
-          }
+            } else {
+              // reorder axes
+              d3.select(this).transition().attr("transform", "translate(" + xscale(d) + ")");
 
-          // remove axis if dragged all the way left
-          if (dragging[d] < 12 || dragging[d] > w-12) {
-            remove_axis(d,g);
-          }
+              var extent = yscale[d].brush.extent();
+            }
 
-          // TODO required to avoid a bug
-          xscale.domain(dimensions);
-          update_ticks(d, extent);
+            // remove axis if dragged all the way left
+            if (dragging[d] < 12 || dragging[d] > w-12) {
+              remove_axis(d,g);
+            }
 
-          // rerender
-          d3.select("#foreground").style("opacity", null);
-          brush();
-          delete this.__dragged__;
-          delete this.__origin__;
-          delete dragging[d];
-        }))
-  /*var dimensions = [
-    {
-      name: "name",
-      scale: d3.scale.ordinal().rangePoints([0, height]),
-      type: "string"
-    }]*/
+            // TODO required to avoid a bug
+            xscale.domain(dimensions);
+            update_ticks(d, extent);
 
-  // Add an axis and title.
-  g.append("svg:g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0,0)")
-      .each(function(d) { d3.select(this).call(axis.scale(yscale[d])); })
-    .append("svg:text")
-      .attr("text-anchor", "middle")
-      .attr("y", function(d,i) { return i%2 == 0 ? -14 : -30 } )
-      .attr("x", 0)
-      .attr("width", 1)
-      .attr("class", "label")
-      .text(String)
-      .append("title")
-        .text("Click to invert. Drag to reorder");
+            // rerender
+            d3.select("#foreground").style("opacity", null);
+            brush();
+            delete this.__dragged__;
+            delete this.__origin__;
+            delete dragging[d];
+          }))
+    /*var dimensions = [
+      {
+        name: "name",
+        scale: d3.scale.ordinal().rangePoints([0, height]),
+        type: "string"
+      }]*/
 
-  // Add and store a brush for each axis.
-  g.append("svg:g")
-      .attr("class", "brush")
-      .each(function(d) { d3.select(this).call(yscale[d].brush = d3.svg.brush().y(yscale[d]).on("brush", brush)); })
-    .selectAll("rect")
-      .style("visibility", null)
-      .attr("x", -23)
-      .attr("width", 36)
-      .append("title")
-        .text("Drag up or down to brush along this axis");
+    // Add an axis and title.
+    g.append("svg:g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0,0)")
+        .each(function(d) { d3.select(this).call(axis.scale(yscale[d])); })
+      .append("svg:text")
+        .attr("text-anchor", "middle")
+        .attr("y", function(d,i) { return i%2 == 0 ? -14 : -30 } )
+        .attr("x", 0)
+        .attr("width", 1)
+        .attr("class", "label")
+        .text(String)
+        .append("title")
+          .text("Click to invert. Drag to reorder");
 
-  g.selectAll(".extent")
-      .append("title")
-        .text("Drag or resize this filter");
+    // Add and store a brush for each axis.
+    g.append("svg:g")
+        .attr("class", "brush")
+        .each(function(d) { d3.select(this).call(yscale[d].brush = d3.svg.brush().y(yscale[d]).on("brush", brush)); })
+      .selectAll("rect")
+        .style("visibility", null)
+        .attr("x", -23)
+        .attr("width", 36)
+        .append("title")
+          .text("Drag up or down to brush along this axis");
+
+    g.selectAll(".extent")
+        .append("title")
+          .text("Drag or resize this filter");
 
 
-  legend = create_legend(colors,brush);
+    legend = create_legend(colors,brush);
 
-  // Render full foreground
-  brush();
+    // Render full foreground
+    brush();
 
-});
+  })
+}
 
 // copy one canvas to another, grayscale
 function gray_copy(source, target) {
@@ -405,9 +401,32 @@ function path(d, ctx, color) {
 
 
 function color(d,a) {
-  console.log(d)
-  var c = colors[d];
-  return ["hsla(",c[0],",",c[1],"%,",c[2],"%,",a,")"].join("");
+  if (d === "North America") {
+    var c = "#FF0000"
+  }
+  if (d === "Europe") {
+    var c = "#008000"
+  }
+  if (d === "Africa") {
+    var c = "#0000FF"
+  }
+  if (d === "South America") {
+    var c = "#FFFF00"
+  }
+  if (d === "Central America") {
+    var c = "#FF00FF"
+  }
+  if (d === "Asia") {
+    var c = "#00FFFF"
+  }
+  if (d === "Oceania") {
+    var c = "#FF5722"
+  }
+  if (d === "World Average") {
+    var c = "#666666"
+  }
+  //var c = colors[d];
+  return c;
 }
 
 function position(d) {

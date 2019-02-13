@@ -1,3 +1,4 @@
+
 html, body {
   margin: 0;
   width: 100%;
@@ -34,6 +35,8 @@ canvas, svg {
 }
 #chart {
   position: relative;
+  padding-left:5%;
+  padding-right:5%;
 }
 .brush rect.extent {
   fill: rgba(100,100,100,0.15);
@@ -240,4 +243,26 @@ button#exclude-data:hover {
 }
 .dark ::-webkit-scrollbar-thumb {
   background: #444;
+}
+
+#chart-container {
+  width: 80%;
+  display: block;
+  margin-left:10%;
+  margin-right: 10%;
+  margin-top: 10%;
+  margin-bottom: 10%;
+}
+
+form {
+  padding-top:1%;
+  width: 100%;
+  text-align:center;
+}
+form input {
+  display: inline-block;
+  width:15%;
+  text-align:center;
+  margin-left: auto;
+  margin-right: auto;
 }

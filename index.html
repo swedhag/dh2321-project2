@@ -7,7 +7,7 @@
   </head>
   <body>
   <div id="header">
-    <h1>Job Values explorer</h1>
+    <h1>Active Memberships of Voluntary Organizations</h1>
     <button title="Zoom in on selected data" id="keep-data" disabled="disabled">Keep</button>
     <button title="Remove selected data" id="exclude-data" disabled="disabled">Exclude</button>
     <button title="Export data as CSV" id="export-data">Export</button>
@@ -24,33 +24,32 @@
     </div>
     <div style="clear:both;"></div>
   </div>
-  <div id="chart">
-    <canvas id="background"></canvas>
-    <canvas id="foreground"></canvas>
-    <canvas id="highlight"></canvas>
-    <svg></svg>
-  </div>
+  <form>
+    <input type="button" name="./95-99/data.csv"  value="1995-1999" onclick="filterWave(this.name)"></input>
+    <input type="button" name="./00-04/data.csv"  value="2000-2004" onclick="filterWave(this.name)"></input>
+    <input type="button" name="./05-09/data.csv"  value="2005-2009" onclick="filterWave(this.name)"></input>
+    <input type="button" name="./10-14/data.csv"  value="2010-2014" onclick="filterWave(this.name)"></input>
+  </form>
+    <div id="chart">
+      <canvas id="background"></canvas>
+      <canvas id="foreground"></canvas>
+      <canvas id="highlight"></canvas>
+      <svg></svg>
+    </div>
   <div id="wrap">
     <div class="third" id="controls">
       <div class="bright">
         <h3>What is this?</h3>
         <p>
           <a href="http://www.worldvaluessurvey.org/wvs.jsp" target="_blank">The World Values Survey</a>
-          is an organization which surveys people from different countries on their personal values and attitudes.
+          is an organization which surveys people from different countries on their personal values, attitudes and engagements.
         </p>
         <p>
-          This is a visualization regarding values and attitudes towards jobs and working life. Survey respondants were asked to name the aspects of a job that perceivably are the most important.
+          This is a visualization regarding the respondees' engagements and memberships in voluntary political and non-political organizations. Organizational memberships and engagements have been divided into categories.
         </p>
         <p>
-          The parallel coordinate system above displays the percentage of respondees from each surveyed country who mentioned each aspect as an important one!
+          The parallel coordinate system above displays the percentage of respondees from each surveyed country who regard themselves to be an active member of a voluntary organizations.
         </p>
-      </div>
-
-      <div class="little-box">
-        <select name="time" id="time">
-          <option value="data.csv">2000-2004</option>
-          <option value="newdata.csv">1995-1999</option>
-        </select>
       </div>
       <div class="little-box">
         <h3>Controls</h3>
@@ -84,7 +83,7 @@
       </p>
     </div>
     <div class="third">
-      <h3>Sample of 25 entries <input type="text" id="search" placeholder="Search Foods..."></input></h3>
+      <h3>Sample of 25 countries <input type="text" id="search" placeholder="Search for country..."></input></h3>
       <p id="food-list">
       </p>
     </div>
