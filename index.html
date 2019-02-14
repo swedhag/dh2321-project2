@@ -6,88 +6,108 @@
     <link rel="stylesheet" type="text/css" href="design.css" />
   </head>
   <body>
-  <div id="header">
+  <div id="start">
     <h1>Active Memberships of Voluntary Organizations</h1>
-    <button title="Zoom in on selected data" id="keep-data" disabled="disabled">Keep</button>
-    <button title="Remove selected data" id="exclude-data" disabled="disabled">Exclude</button>
-    <button title="Export data as CSV" id="export-data">Export</button>
-    <div class="controls">
-      <strong id="rendered-count"></strong>/<strong id="selected-count"></strong><!--<strong id="data-count"></strong>-->
-      <div class="fillbar"><div id="selected-bar"><div id="rendered-bar">&nbsp;</div></div></div>
-      Lines at <strong id="opacity"></strong> opacity.
-      <span class="settings">
-        <button id="hide-ticks">Hide Ticks</button>
-        <button id="show-ticks" disabled="disabled">Show Ticks</button>
-        <button id="dark-theme">Dark</button>
-        <button id="light-theme" disabled="disabled">Light</button>
-      </span>
-    </div>
-    <div style="clear:both;"></div>
+      <img src="./assets/map.png">
+      <h3 style="margin-top:5%; margin-bottom: 2 auto; font-size:20px;">What is this?</h3>
+      <p>
+        <a href="http://www.worldvaluessurvey.org/wvs.jsp" target="_blank">The World Values Survey</a>
+        is an organization which surveys people from different countries on their personal values, attitudes and engagements.
+      </p>
+      <p>
+        This is a visualization regarding the respondees' engagements and memberships in voluntary political and non-political organizations. Organizational memberships and engagements have been divided into categories.
+      </p>
+      <p>
+        The parallel coordinate system above displays the percentage of respondees from each surveyed country who regard themselves to be an active member of a voluntary organizations.
+      </p>
+      <button onclick="start()">Click to enter</button>
   </div>
-  <form>
-    <input type="button" name="./95-99/data.csv"  value="1995-1999" onclick="filterWave(this.name)"></input>
-    <input type="button" name="./00-04/data.csv"  value="2000-2004" onclick="filterWave(this.name)"></input>
-    <input type="button" name="./05-09/data.csv"  value="2005-2009" onclick="filterWave(this.name)"></input>
-    <input type="button" name="./10-14/data.csv"  value="2010-2014" onclick="filterWave(this.name)"></input>
-  </form>
-    <div id="chart">
-      <canvas id="background"></canvas>
-      <canvas id="foreground"></canvas>
-      <canvas id="highlight"></canvas>
-      <svg></svg>
+
+  <div id="app">
+    <div id="header">
+      <button title="Export data as CSV" id="export-data">Export</button>
+      <h1>Active Memberships of Voluntary Organizations</h1>
+      <!---<button title="Zoom in on selected data" id="keep-data" disabled="disabled">Keep</button>--->
+      <!---<button title="Remove selected data" id="exclude-data" disabled="disabled">Exclude</button>--->
+      <div class="controls">
+        <strong id="rendered-count"></strong>/<strong id="selected-count"></strong><!--<strong id="data-count"></strong>-->
+        <div class="fillbar"><div id="selected-bar"><div id="rendered-bar">&nbsp;</div></div></div>
+        <!--Lines at <strong id="opacity"></strong> opacity.-->
+        <span class="settings">
+          <button id="hide-ticks">Hide Ticks</button>
+          <button id="show-ticks" disabled="disabled">Show Ticks</button>
+          <button id="dark-theme">Dark</button>
+          <button id="light-theme" disabled="disabled">Light</button>
+        </span>
+      </div>
+      <div style="clear:both;"></div>
     </div>
-  <div id="wrap">
-    <div class="third" id="controls">
-      <div class="bright">
-        <h3>What is this?</h3>
-        <p>
-          <a href="http://www.worldvaluessurvey.org/wvs.jsp" target="_blank">The World Values Survey</a>
-          is an organization which surveys people from different countries on their personal values, attitudes and engagements.
-        </p>
-        <p>
-          This is a visualization regarding the respondees' engagements and memberships in voluntary political and non-political organizations. Organizational memberships and engagements have been divided into categories.
-        </p>
-        <p>
-          The parallel coordinate system above displays the percentage of respondees from each surveyed country who regard themselves to be an active member of a voluntary organizations.
-        </p>
+    <form>
+      <input type="button" name="./95-99/data.csv"  value="1995-1999" onclick="filterWave(this.name)"></input>
+      <input type="button" name="./00-04/data.csv"  value="2000-2004" onclick="filterWave(this.name)"></input>
+      <input type="button" name="./05-09/data.csv"  value="2005-2009" onclick="filterWave(this.name)"></input>
+      <input type="button" name="./10-14/data.csv"  value="2010-2014" onclick="filterWave(this.name)"></input>
+    </form>
+    <h3 id="chartheader">Wave selected for preview: 2010-2014</h3>
+      <div id="chart">
+        <canvas id="background"></canvas>
+        <canvas id="foreground"></canvas>
+        <canvas id="highlight"></canvas>
+        <svg></svg>
       </div>
-      <div class="little-box">
-        <h3>Controls</h3>
-        <p>
-          <strong>Brush</strong>: Drag vertically along an axis.<br/>
-          <strong>Remove Brush</strong>: Tap the axis background.<br/>
-          <strong>Reorder Axes</strong>: Drag a label horizontally.<br/>
-          <strong>Invert Axis</strong>: Tap an axis label.<br/>
-          <strong>Remove Axis</strong>: Drag axis label to the left edge.<br/>
-        </p>
-      </div>
-      <div class="little-box">
-        <h3>Credits &amp; License</h3>
+    <div id="wrap">
+      <div class="third" id="controls">
+        <div class="bright">
+          <h3>What is this?</h3>
           <p>
-          Adapted from examples by<br/>
-          <a href="http://bl.ocks.org/1341021">Mike Bostock</a> and <a href="http://bl.ocks.org/1341281">Jason Davies</a><br/>
+            <a href="http://www.worldvaluessurvey.org/wvs.jsp" target="_blank">The World Values Survey</a>
+            is an organization which surveys people from different countries on their personal values, attitudes and engagements.
           </p>
           <p>
-            Copyright &copy; 2012, Kai Chang<br/>
-            All rights reserved. Released under the <a href="http://opensource.org/licenses/bsd-3-clause">BSD License</a>.
+            This is a visualization regarding the respondees' engagements and memberships in voluntary political and non-political organizations. Organizational memberships and engagements have been divided into categories.
           </p>
+          <p>
+            The parallel coordinate system above displays the percentage of respondees from each surveyed country who regard themselves to be an active member of a voluntary organizations.
+          </p>
+        </div>
+        <div class="little-box">
+          <h3>Controls</h3>
+          <p>
+            <strong>Brush</strong>: Drag vertically along an axis.<br/>
+            <strong>Remove Brush</strong>: Tap the axis background.<br/>
+            <strong>Reorder Axes</strong>: Drag a label horizontally.<br/>
+            <strong>Invert Axis</strong>: Tap an axis label.<br/>
+            <strong>Remove Axis</strong>: Drag axis label to the left edge.<br/>
+          </p>
+        </div>
+        <div class="little-box">
+          <h3>Credits &amp; License</h3>
+            <p>
+            Adapted from examples by<br/>
+            <a href="http://bl.ocks.org/1341021">Mike Bostock</a> and <a href="http://bl.ocks.org/1341281">Jason Davies</a><br/>
+            </p>
+            <p>
+              Copyright &copy; 2012, Kai Chang<br/>
+              All rights reserved. Released under the <a href="http://opensource.org/licenses/bsd-3-clause">BSD License</a>.
+            </p>
+          </p>
+        </div>
+      </div>
+      <div  class="third">
+        <small>
+          <!--Last rendered <strong id="render-speed"></strong> lines-->
+        </small>
+        <h3>Continents Represented</h3>
+        <p id="legend">
+        </p>
+      </div>
+      <div class="third">
+        <h3>Sample of 25 countries <input type="text" id="search" placeholder="Search for country..."></input></h3>
+        <p id="food-list">
         </p>
       </div>
     </div>
-    <div  class="third">
-      <small>
-        <!--Last rendered <strong id="render-speed"></strong> lines-->
-      </small>
-      <h3>Continents Represented</h3>
-      <p id="legend">
-      </p>
-    </div>
-    <div class="third">
-      <h3>Sample of 25 countries <input type="text" id="search" placeholder="Search for country..."></input></h3>
-      <p id="food-list">
-      </p>
-    </div>
-  </div>
+  <div>
   </body>
   <script src="https://d3js.org/d3.v2.min.js" charset="utf-8"></script>
   <script src="underscore.js"></script>

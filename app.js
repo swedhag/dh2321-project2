@@ -65,17 +65,33 @@ var svg = d3.select("svg")
   .append("svg:g")
     .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
+function start() {
+  var start = document.getElementById("start");
+  var app = document.getElementById("app");
+  start.style.display = "none";
+  app.style.display = "block";
+  filterWave('./10-14/data.csv');
+}
+
 function filterWave(val) {
-  //d3.select("svg").remove();
-  //d3.select("#foreground").remove();
+  if (val == './95-99/data.csv'){
+    document.getElementById("chartheader").innerHTML = "Wave selected for preview: 1995-1999";
+  }
+  else if (val == './00-04/data.csv'){
+    document.getElementById("chartheader").innerHTML = "Wave selected for preview: 2000-2004";
+  }
+  else if (val == './05-09/data.csv'){
+    document.getElementById("chartheader").innerHTML = "Wave selected for preview: 2005-2009";
+  }
+  else {
+        document.getElementById("chartheader").innerHTML = "Wave selected for preview: 2010-2014";
+  }
   var canvas = document.getElementById("foreground");
   var context = canvas.getContext("2d");
   context.clearRect(0,0,canvas.width,canvas.height);
   d3.selectAll("g").remove();
   document.getElementById("legend").innerHTML = "";
   document.getElementById("food-list").innerHTML = "";
-  //d3.select("#foreground").remove();
-  console.log("hejsanhoppsan");
   loadWave(val);
   console.log(val);
 }
