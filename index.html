@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <title>Project 2</title>
     <link rel="stylesheet" type="text/css" href="design.css" />
-  </head>
   <body>
   <div id="start">
     <h1>Active Memberships of Voluntary Organizations</h1>
@@ -27,8 +26,6 @@
     <div id="header">
       <button title="Export data as CSV" id="export-data">Export</button>
       <h1>Active Memberships of Voluntary Organizations</h1>
-      <!---<button title="Zoom in on selected data" id="keep-data" disabled="disabled">Keep</button>--->
-      <!---<button title="Remove selected data" id="exclude-data" disabled="disabled">Exclude</button>--->
       <div class="controls">
         <strong id="rendered-count"></strong>/<strong id="selected-count"></strong><!--<strong id="data-count"></strong>-->
         <div class="fillbar"><div id="selected-bar"><div id="rendered-bar">&nbsp;</div></div></div>
@@ -48,13 +45,13 @@
       <input type="button" name="./05-09/data.csv"  value="2005-2009" onclick="filterWave(this.name)"></input>
       <input type="button" name="./10-14/data.csv"  value="2010-2014" onclick="filterWave(this.name)"></input>
     </form>
-    <h3 id="chartheader">Wave selected for preview: 2010-2014</h3>
-      <div id="chart">
-        <canvas id="background"></canvas>
-        <canvas id="foreground"></canvas>
-        <canvas id="highlight"></canvas>
-        <svg></svg>
-      </div>
+      <h3 id="charttitle">Wave selected for preview: 2010-2014</h3>
+    <div id="chart">
+      <canvas id="background"></canvas>
+      <canvas id="foreground"></canvas>
+      <canvas id="highlight"></canvas>
+      <svg></svg>
+    </div>
     <div id="wrap">
       <div class="third" id="controls">
         <div class="bright">
@@ -73,6 +70,7 @@
         <div class="little-box">
           <h3>Controls</h3>
           <p>
+            <strong>Details</strong>: Click on a name in the list of countries to display information provided by Gapminder.<br/>
             <strong>Brush</strong>: Drag vertically along an axis.<br/>
             <strong>Remove Brush</strong>: Tap the axis background.<br/>
             <strong>Reorder Axes</strong>: Drag a label horizontally.<br/>
@@ -97,13 +95,22 @@
         <small>
           <!--Last rendered <strong id="render-speed"></strong> lines-->
         </small>
+        <div id="details">
+        </div>
+        <!--<div style="display:none;" id="showAlgeria">
+          <button value="showAlgeria" onclick="closeDetails(this.value)">X</button>
+        </div>
+        <div style="display:none;" id="showBrazil">
+          <button value="showBrazil" onclick="closeDetails(this.value)">X</button>
+        </div> -->
         <h3>Continents Represented</h3>
         <p id="legend">
         </p>
       </div>
+      </div>
       <div class="third">
         <h3>Sample of 25 countries <input type="text" id="search" placeholder="Search for country..."></input></h3>
-        <p id="food-list">
+        <p id="country-list">
         </p>
       </div>
     </div>

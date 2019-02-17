@@ -1,3 +1,12 @@
+var wave = "";
+function showDetails (country) {
+  var div = document.getElementById("show" + country);
+  div.style.display = "block";
+}
+function closeDetails (val){
+  var l = val.split("close");
+  document.getElementById("show" + l[1]).style.display = "none";
+}
 
 var width = document.body.clientWidth,
     height = d3.max([document.body.clientHeight-540, 240]);
@@ -28,7 +37,7 @@ var colors = {
   "North America": [300,100,50],
   "Oceania": [60,100,50],
   "South America": [0,0,50],
-  "World Average":[0,0,0]
+  "Sample Average":[0,0,0]
 };
 
 // Scale chart and canvas height
@@ -70,33 +79,57 @@ function start() {
   var app = document.getElementById("app");
   start.style.display = "none";
   app.style.display = "block";
-  filterWave('./10-14/data.csv');
+  filterWave('./95-99/data.csv');
 }
 
 function filterWave(val) {
   if (val == './95-99/data.csv'){
-    document.getElementById("chartheader").innerHTML = "Wave selected for preview: 1995-1999";
+    document.getElementById("charttitle").innerHTML = "Wave selected for preview: 1995-1999";
+    var val2 = './gapminder/95-99/gapminder95-99.csv'
+    wave = "1995-1999";
   }
   else if (val == './00-04/data.csv'){
-    document.getElementById("chartheader").innerHTML = "Wave selected for preview: 2000-2004";
+    document.getElementById("charttitle").innerHTML = "Wave selected for preview: 2000-2004";
+    var val2 = './gapminder/00-04/gapminder00-04.csv'
+    wave = "2000-2004";
   }
   else if (val == './05-09/data.csv'){
-    document.getElementById("chartheader").innerHTML = "Wave selected for preview: 2005-2009";
+    document.getElementById("charttitle").innerHTML = "Wave selected for preview: 2005-2009";
+    var val2 = './gapminder/05-09/gapminder05-09.csv'
+    wave = "2005-2009";
   }
   else {
-        document.getElementById("chartheader").innerHTML = "Wave selected for preview: 2010-2014";
+    document.getElementById("charttitle").innerHTML = "Wave selected for preview: 2010-2014";
+    var val2 = './gapminder/10-14/gapminder10-14.csv'
+    wave = "2010-2014";
   }
+  /*var wave = "";
+  console.log(wave);
+  if (val2 == "./gapminder/95-99/gapminder95-99.csv") {
+    wave = "1995-1999";
+  }
+  else if (val2 == "./gapminder/00-04/gapminder00-04.csv") {
+    wave = "2000-2004";
+  }
+  else if (val2 == "./gapminder/05-09/gapminder05-09.csv") {
+    wave = "2005-2009";
+  }
+  else (val2 == "./gapminder/10-14/gapminder10-14.csv") {
+    wave = "2010-2014";
+  }*/
   var canvas = document.getElementById("foreground");
   var context = canvas.getContext("2d");
   context.clearRect(0,0,canvas.width,canvas.height);
   d3.selectAll("g").remove();
   document.getElementById("legend").innerHTML = "";
-  document.getElementById("food-list").innerHTML = "";
-  loadWave(val);
+  document.getElementById("country-list").innerHTML = "";
+  document.getElementById("details").innerHTML = "";
+  loadWave(val, val2);
   console.log(val);
 }
 
-function loadWave(val) {
+function loadWave(val, val2) {
+
   var svg = d3.select("svg")
       .attr("width", w + m[1] + m[3])
       .attr("height", h + m[0] + m[2])
@@ -112,6 +145,77 @@ function loadWave(val) {
         }
       };
       return d;
+    });
+    d3.csv(val2, function(data2) {
+
+      var details = d3.select("#details")
+        .selectAll("div")
+        .data(data2)
+        .enter()
+        .append("div")
+          .attr("id", function(d) {return "show" + d.country;})
+          .style("display", "none")
+          .style("border", "1px solid grey")
+          .style("border-radius", "5px")
+          .style("padding", "5px 5px 5px 5px")
+
+      details.append("input")
+        .attr("type", "button")
+        .attr("value","X")
+        .attr("id", function(d) { return "close" + d.country})
+        .attr("onclick", "closeDetails(this.id)")
+
+      details.append("p")
+        .style("font-size", "9px")
+        .style("color", "grey")
+        .style("display","block")
+        .style("float","right")
+        .text(wave)
+
+      details.append("h3")
+        .text(function(d) {return d.country})
+        .style("float","left")
+
+      details.append("p")
+        .text(function(d) {if (d.InternetUsers == "") {
+                            return "Of population who used internet: NaN %"
+                          } else{
+                            return "Of population who used internet: " + d.InternetUsers + "%."}})
+
+      details.append("p")
+        .text(function(d) {if (d.LifeExpectancy == "") {
+                            return "Life expectancy: NaN years."
+                          } else{
+                            return "Life expectancy: " + d.LifeExpectancy + " years."}})
+
+      details.append("p")
+        .text(function(d) {if (d.GDPPerCapita == "") {
+                            return "GDP per capita: NaN international $."
+                          } else{
+                            return "GDP per capita: " + d.GDPPerCapita + " international $."}})
+
+      details.append("p")
+        .text(function(d) {if (d.HealthSpending == "") {
+                            return "Government health spending per capita: NaN US$."
+                          } else{
+                            return "Government health spending per capita: " + d.HealthSpending + " US$."}})
+      details.append("p")
+        .text(function(d) {if (d.CO2Emissions == "") {
+                          return "CO2 emissions: NaN tonnes per person."
+                          } else{
+                            return "CO2 emissions: " + d.CO2Emissions + " tonnes per person."}})
+      details.append("p")
+        .text(function(d) {if (d.LabourForceParticipation == "") {
+                            return "Labour force participation: NaN %."
+                          } else{
+                            return "Labour force participation: " + d.LabourForceParticipation + " %."}})
+
+     details.append("p")
+      .text(function(d) {if (d.DeadKidsPerWoman == "") {
+                          return "Dead children per woman: NaN children."
+                        } else{
+                          return "Dead children per woman: " + d.DeadKidsPerWoman + " children."}})
+
     });
 
     // Extract the list of numerical dimensions and create a scale for each.
@@ -299,11 +403,15 @@ function data_table(sample) {
     return a[col] < b[col] ? -1 : 1;
   });
 
-  var table = d3.select("#food-list")
+  var table = d3.select("#country-list")
     .html("")
     .selectAll(".row")
       .data(sample)
     .enter().append("div")
+      .attr("id", function(d) { return d.name})
+      .on("click", function (d){
+        showDetails(d.name)
+      })
       .on("mouseover", highlight)
       .on("mouseout", unhighlight);
 
@@ -315,6 +423,7 @@ function data_table(sample) {
   table
     .append("span")
       .text(function(d) { return d.name; })
+      .append("title").text("hej")
 }
 
 // Adjusts rendering speed
@@ -438,7 +547,7 @@ function color(d,a) {
   if (d === "Oceania") {
     var c = "#FF5722"
   }
-  if (d === "World Average") {
+  if (d === "Sample Average") {
     var c = "#666666"
   }
   //var c = colors[d];
