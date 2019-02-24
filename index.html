@@ -107,14 +107,71 @@
         <p id="legend">
         </p>
       </div>
-      </div>
       <div class="third">
         <h3>Sample of 25 countries <input type="text" id="search" placeholder="Search for country..."></input></h3>
         <p id="country-list">
         </p>
       </div>
     </div>
-  <div>
+  <div style="width:100%; padding-top: 600px">
+    <div style="display:block" class="third">
+            <h3>Analytical Trail - WVS</h3>
+            <p>
+              For this project, I was interested in investigating the political, but also cultural climate of the countries included in the <a href="http://www.worldvaluessurvey.org/wvs.jsp" target="_blank">WVS</a>. A good dataset, spanning the 4 latest documented waves of the <a href="http://www.worldvaluessurvey.org/wvs.jsp" target="_blank">WVS</a>, was the one about active memberships in voluntary organizations. Sweden is a country known for its social democratic and secular views. A question which got me going, was whether I could isolate my home country, given the datasets and this previously mentioned knowledge. 
+            </p>
+            <img width="100%" height="100%" src="./assets/countryselect.png"/>
+            <p>
+              For the first wave which was to be analyzed, I had to select every country one-by-one. 
+            </p>
+            <img style="margin-top:2%"width="100%" height="100%" src="./assets/labourtable.png"/>
+            <p>
+              Labour unions are strong in social democracies. After selecting this dataset, I was presented with an overwhelming table.
+            </p>
+            <img style="margin-top:2%"width="100%" height="100%" src="./assets/swedentable.png"/>
+            <p>
+              Having to keep the upper row in mind, I was forced to scroll down until I found a value for Sweden. 
+            </p>
+            <img style="margin-top:2%"width="100%" height="100%" src="./assets/labourbarchart.png"/>
+            <p>
+              After looking around, I found that the table could be translated into charts of different types. I found the above chart to be the most informative. However, the chart doesn’t clearly convey any real patterns. Selecting Sweden in the sorted list, only caused the bars of Sweden to be hidden. Going on analyzing later waves, or the secular views of Sweden, would force me to redo all steps.
+            </p>
+      </div>
+      <div style="display:block" class="third">
+            <h3>Analytical Trail - My Service</h3>
+            <img width="100%" height="100%" src="./assets/paralleloverview.png"/>
+            <p>
+              Since I had to visualize multivariate data for this assignment, I felt the best way to go about this was using a parallel coordinate system. When a user loads the page, an overview visualization for the preselected data is displayed, all countries included.
+            </p>
+            <img style="margin-top:2%"width="100%" height="100%" src="./assets/brushingsearching.png"/>
+            <p>
+              The user can use the brushing tool to interactively isolate countries, as well as use the search bar for navigating the visualization. 
+            </p>
+            <img style="margin-top:2%"width="100%" height="100%" src="./assets/deselect.png"/>
+            <p>
+              The user can also deselect countries of specific continents. All continents have been color coded to produce good categorical separation. Continents can easily be compared to the sample average for every attribute.
+            </p>
+            <img style="margin-top:2%"width="100%" height="100%" src="./assets/waveselect.png"/>
+            <p>
+              The wave displayed can be switched using the buttons on the top of the page.
+            </p>
+            <img style="margin-top:2%"width="100%" height="100%" src="./assets/gapminder.png"/>
+            <p>
+              Detailed data for each country is displayed by clicking a country’s name in the searchbar interface. Data from Gapminder.
+            </p>
+            <img style="margin-top:2%" width="100%" height="100%" src="./assets/thesis.png"/>
+            <p>
+              As to my initial question, I would now yet again attempt to isolate Sweden based on it’s social democratic and secular views. I use the brushing tool to select the countries from the latest wave with the most particpants in labour unions and the least participants in religious organizations. I get two hits, one of which is Sweden. Perhaps, Sweden isn’t as different from Kyrgyzstan as one would assume.
+            </p>
+      </div>
+      <div style="display:block" class="third">
+        <h3 style="display:block, float:left, margin-top: 10%">Learning</h3>
+        <p>For this project, I have learned how to use and apply existing solutions and theories and adaptively use these to solve problems of my own. I have also grown to appreciate the importance of good data visualizations. If data is not made easily interpretable, much of its value is lost.
+        </p>
+        <p>
+        I have grown to respect the workload of data cleaning. I wouldn’t be surprised if the time spent on this project was mostly contributed to downloading XSL-files, transposing rows and columns, and calculating averages. For future projects, I would do better in writing scripts for handling the data cleaning. 
+        </p>
+      </div>
+    </div>
   </body>
   <script src="https://d3js.org/d3.v2.min.js" charset="utf-8"></script>
   <script src="underscore.js"></script>

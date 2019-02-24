@@ -545,7 +545,7 @@ function color(d,a) {
     var c = "#00FFFF"
   }
   if (d === "Oceania") {
-    var c = "#FF5722"
+    var c = "#984ea3"
   }
   if (d === "Sample Average") {
     var c = "#666666"
